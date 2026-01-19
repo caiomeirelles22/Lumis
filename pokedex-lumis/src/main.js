@@ -1,6 +1,7 @@
 import { Header } from "./components/Header.js";
 import { SearchBar } from "./components/searchBar/index.js";
 import { PokemonList } from "./components/pokemonList/index.js";
+import { Pagination } from './components/pagination/index.js';
 
 const app = document.querySelector("#app");
 
@@ -92,3 +93,4 @@ app.innerHTML = `
 document.querySelector("#header-root").innerHTML = Header();
 document.querySelector("#search-root").innerHTML = SearchBar();
 document.querySelector("#list-root").innerHTML = PokemonList(mockPokemons);
+document.querySelector("#pagination-root").innerHTML = Pagination();
