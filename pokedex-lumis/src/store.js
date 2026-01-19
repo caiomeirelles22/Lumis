@@ -1,6 +1,6 @@
 export const state = {
   allPokemons: [],
-  filteredPokemons: [],
+  globalIndex: [],
+  itemsPerPage: 18,
   currentPage: 0,
-  itemsPerPage: 18
 };

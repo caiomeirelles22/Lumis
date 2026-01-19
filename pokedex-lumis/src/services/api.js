@@ -1,43 +1,52 @@
 const BASE_URL = "https://pokeapi.co/api/v2";
 
 export const pokemonService = {
-  /**
-   
-   * @param {number} offset
-   * @param {number} limit 
-   */
-
   async fetchPokemons(offset = 0, limit = 18) {
-    try {
-      const response = await fetch(
-        `${BASE_URL}/pokemon?offset=${offset}&limit=${limit}`,
-      );
-      const data = await response.json();
+    const response = await fetch(
+      `${BASE_URL}/pokemon?offset=${offset}&limit=${limit}`,
+    );
+    const data = await response.json();
+    const detailPromises = data.results.map((p) =>
+      this.fetchPokemonDetails(p.url),
+    );
+    return await Promise.all(detailPromises);
+  },
 
-      const detailPromises = data.results.map((pokemon) =>
-        this.fetchPokemonDetails(pokemon.url),
-      );
-      return await Promise.all(detailPromises);
-    } catch (error) {
-      console.error("Erro ao buscar lista de pokémons:", error);
-      throw error;
-    }
+  async fetchAllNames() {
+    const response = await fetch(`${BASE_URL}/pokemon?limit=1500`);
+    const data = await response.json();
+    return data.results.map((p) => ({
+      name: p.name,
+      id: p.url.split("/").filter(Boolean).pop(),
+      url: p.url,
+    }));
   },
 
   async fetchPokemonDetails(urlOrName) {
+    const response = await fetch(urlOrName);
+    const data = await response.json();
+    return {
+      id: data.id,
+      name: data.name,
+      image: data.sprites.other["official-artwork"].front_default,
+      types: data.types.map((t) => t.type.name),
+      abilities: data.abilities.map((a) => a.ability.name),
+    };
+  },
+  async fetchByType(typeName) {
     try {
-      const response = await fetch(urlOrName);
+      const response = await fetch(`${BASE_URL}/type/${typeName}`);
       const data = await response.json();
 
-      return {
-        id: data.id,
-        name: data.name,
-        image: data.sprites.other["official-artwork"].front_default,
-        types: data.types.map((t) => t.type.name),
-      };
+      const pokemonUrls = data.pokemon.slice(0, 18).map((p) => p.pokemon.url);
+
+      const detailPromises = pokemonUrls.map((url) =>
+        this.fetchPokemonDetails(url),
+      );
+      return await Promise.all(detailPromises);
     } catch (error) {
-      console.error(`Erro ao buscar detalhes do pokémon ${urlOrName}:`, error);
-      return null;
+      console.error("Erro ao buscar por tipo:", error);
+      return [];
     }
   },
 };
