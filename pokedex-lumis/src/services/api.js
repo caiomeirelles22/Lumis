@@ -33,20 +33,17 @@ export const pokemonService = {
       abilities: data.abilities.map((a) => a.ability.name),
     };
   },
-  async fetchByType(typeName) {
-    try {
-      const response = await fetch(`${BASE_URL}/type/${typeName}`);
-      const data = await response.json();
+  async fetchByType(typeName, offset = 0) {
+    const response = await fetch(`${BASE_URL}/type/${typeName}`);
+    const data = await response.json();
 
-      const pokemonUrls = data.pokemon.slice(0, 18).map((p) => p.pokemon.url);
+    const pokemonUrls = data.pokemon
+      .slice(offset, offset + 18)
+      .map((p) => p.pokemon.url);
 
-      const detailPromises = pokemonUrls.map((url) =>
-        this.fetchPokemonDetails(url),
-      );
-      return await Promise.all(detailPromises);
-    } catch (error) {
-      console.error("Erro ao buscar por tipo:", error);
-      return [];
-    }
+    const detailPromises = pokemonUrls.map((url) =>
+      this.fetchPokemonDetails(url),
+    );
+    return await Promise.all(detailPromises);
   },
 };

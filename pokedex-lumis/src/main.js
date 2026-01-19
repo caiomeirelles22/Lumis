@@ -9,8 +9,8 @@ import {
 import { state } from "./store.js";
 
 /**
- 
- * @param {number} pageNumber
+
+ * @param {number} pageNumber 
  */
 async function loadPage(pageNumber) {
   const listContainer = document.querySelector("#list-root");
@@ -25,17 +25,22 @@ async function loadPage(pageNumber) {
   const offset = pageNumber * state.itemsPerPage;
 
   try {
-    state.allPokemons = await pokemonService.fetchPokemons(
-      offset,
-      state.itemsPerPage,
-    );
+    let pokemons;
+    let isLastPage;
+
+    if (state.searchContext === "type") {
+      pokemons = await pokemonService.fetchByType(state.currentType, offset);
+
+      isLastPage = pokemons.length < state.itemsPerPage;
+    } else {
+      pokemons = await pokemonService.fetchPokemons(offset, state.itemsPerPage);
+      isLastPage = offset + state.itemsPerPage >= 1025;
+    }
+
     state.currentPage = pageNumber;
+    listContainer.innerHTML = PokemonList(pokemons);
 
-    listContainer.innerHTML = PokemonList(state.allPokemons);
-
-    const isLastPage = offset + state.itemsPerPage >= 1025;
     updatePaginationUI(state.currentPage, isLastPage);
-
     paginationRoot.classList.remove("hidden");
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -78,17 +83,11 @@ async function init() {
     const paginationRoot = document.querySelector("#pagination-root");
 
     if (!term) {
-      paginationRoot.classList.remove("hidden");
-      listContainer.innerHTML = PokemonList(state.allPokemons);
+      state.searchContext = "all";
+      state.currentType = null;
+      await loadPage(0);
       return;
     }
-
-    paginationRoot.classList.add("hidden");
-    listContainer.innerHTML = `
-      <div class="col-span-full py-20 text-center animate-pulse text-text-secondary text-xs font-bold uppercase tracking-wider">
-        Buscando na Pokédex...
-      </div>
-    `;
 
     const pokemonTypes = [
       "grass",
@@ -112,10 +111,14 @@ async function init() {
     ];
 
     if (pokemonTypes.includes(term)) {
-      const typeResults = await pokemonService.fetchByType(term);
-      listContainer.innerHTML = PokemonList(typeResults);
+      state.searchContext = "type";
+      state.currentType = term;
+      await loadPage(0);
       return;
     }
+
+    paginationRoot.classList.add("hidden");
+    listContainer.innerHTML = `<div class="col-span-full py-20 text-center animate-pulse text-text-secondary text-xs font-bold uppercase tracking-wider">Buscando na Pokédex...</div>`;
 
     const matches = state.globalIndex
       .filter((p) => p.name.includes(term) || p.id === term)
