@@ -1,9 +1,8 @@
+import { Header } from './components/Header.js';
 const app = document.querySelector("#app");
 
 app.innerHTML = `
-  <header id="header-container" class="w-full border-b border-gray-100 p-4">
-    <div class="max-w-7xl mx-auto font-bold">Header aqui (Logo e Menu)</div>
-  </header>
+  <div id="header-root"></div>
 
   <main class="max-w-7xl mx-auto p-6 flex-1">
     <section id="search-container" class="mb-10">
@@ -26,4 +25,4 @@ app.innerHTML = `
   </footer>
 `;
 
-console.log("Estrutura final para o Commit 1 renderizada!");
+document.querySelector("#header-root").innerHTML = Header();
