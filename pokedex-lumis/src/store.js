@@ -3,4 +3,5 @@ export const state = {
   globalIndex: [],
   itemsPerPage: 18,
   currentPage: 0,
+  totalPokemons: 0,
 };
