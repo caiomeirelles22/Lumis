@@ -1,7 +1,7 @@
 import { renderStructure } from "./app.js";
 import { pokemonService } from "./services/api.js";
 import { PokemonList } from "./components/pokemonList/index.js";
-import { initSearchBar } from "./components/searchBar/controller.js";
+import { initSearchBar } from "./components/SearchBar/controller.js";
 import {
   initPagination,
   updatePaginationUI,
