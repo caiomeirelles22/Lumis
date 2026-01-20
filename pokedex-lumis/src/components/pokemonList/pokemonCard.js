@@ -24,10 +24,10 @@ export function PokemonCard(pokemon) {
   const typeColor = typeColors[primaryType] || '#000000';
 
   return `
-    <article class="w-full bg-card-bg rounded-card p-4 flex flex-col items-center hover:shadow-md transition-shadow cursor-pointer border border-transparent hover:border-gray-200">
+    <article class="flex-1 min-w-40 max-w-55 bg-card-bg rounded-card p-4 flex flex-col items-center hover:shadow-md transition-shadow cursor-pointer border border-transparent hover:border-gray-200">
       <div class="flex justify-between w-full mb-2">
-       <span class="text-[10px] font-bold uppercase tracking-wider" style="color: ${typeColor}">
-  ${primaryType}
+        <span class="text-[10px] font-bold uppercase tracking-wider" style="color: ${typeColor}">
+          ${primaryType}
         </span>
         <span class="text-text-secondary text-xs font-bold">#${String(pokemon.id).padStart(4, "0")}</span>
       </div>

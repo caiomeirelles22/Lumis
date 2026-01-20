@@ -41,4 +41,12 @@ describe("PokemonCard Component", () => {
     expect(html).toContain("bg-card-bg");
     expect(html).toContain("rounded-card");
   });
+  it('deve aplicar as classes de largura mínima e máxima para o Flexbox', () => {
+  const mockPokemon = { id: 1, name: 'bulbasaur', image: 'img.png', types: ['grass'] };
+  const html = PokemonCard(mockPokemon);
+  
+  expect(html).toContain('min-w-40');
+  expect(html).toContain('max-w-55');
+  expect(html).toContain('flex-1');
+});
 });
