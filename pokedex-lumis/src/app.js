@@ -1,6 +1,6 @@
 import { Header } from "./components/Header.js";
 import { Footer } from "./components/Footer.js";
-import { SearchBar } from "./components/searchBar/index.js";
+import { SearchInput } from "./components/SearchInput/index.js";
 import { Pagination } from "./components/pagination/index.js";
 
 export function renderStructure() {
@@ -22,7 +22,7 @@ export function renderStructure() {
   `;
 
   document.querySelector("#header-root").innerHTML = Header();
-  document.querySelector("#search-root").innerHTML = SearchBar();
+  document.querySelector("#search-root").innerHTML = SearchInput();
   document.querySelector("#pagination-root").innerHTML = Pagination();
   document.querySelector("#footer-root").innerHTML = Footer();
 }

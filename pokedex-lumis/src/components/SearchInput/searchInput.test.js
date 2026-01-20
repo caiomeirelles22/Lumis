@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { SearchBar } from "./index.js";
-import { initSearchBar } from "./controller.js";
+import { SearchInput } from "./index.js";
+import { initSearchInput } from "./controller.js";
 
-describe("SearchBar Component", () => {
+describe("SearchInput Component", () => {
   beforeEach(() => {
-    document.body.innerHTML = `<div id="search-root">${SearchBar()}</div>`;
+    document.body.innerHTML = `<div id="search-root">${SearchInput()}</div>`;
   });
 
   it("deve renderizar o campo de input com o ID correto", () => {
@@ -34,7 +34,7 @@ describe("SearchBar Component", () => {
     vi.useFakeTimers();
     const onSearch = vi.fn();
 
-    initSearchBar(onSearch);
+    initSearchInput(onSearch);
 
     const input = document.querySelector("#search-input");
     input.value = "Pikachu";

@@ -1,7 +1,7 @@
 import { renderStructure } from "./app.js";
 import { pokemonService } from "./services/api.js";
 import { PokemonList } from "./components/pokemonList/index.js";
-import { initSearchBar } from "./components/SearchBar/controller.js";
+import { initSearchInput } from "./components/SearchInput/controller.js";
 import {
   initPagination,
   updatePaginationUI,
@@ -50,7 +50,7 @@ function setupAppEventListeners() {
     if (newPage !== state.currentPage) await loadPage(newPage);
   });
 
-  initSearchBar(async (term) => {
+  initSearchInput(async (term) => {
     const result = await handleSearchLogic(term);
 
     if (result.type === "LOAD_PAGE") {

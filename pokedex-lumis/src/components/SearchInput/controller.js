@@ -1,6 +1,6 @@
 import { debounce } from "../../utils/debounce.js";
 
-export function initSearchBar(onSearch) {
+export function initSearchInput(onSearch) {
   const input = document.querySelector("#search-input");
   if (!input) return;
 

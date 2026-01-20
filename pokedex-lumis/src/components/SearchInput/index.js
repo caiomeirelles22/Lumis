@@ -1,4 +1,4 @@
-export function SearchBar() {
+export function SearchInput() {
   return `
     <div class="flex justify-center w-full">
       <div class="relative w-full max-w-180">
